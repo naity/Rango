@@ -2,3 +2,9 @@
     height: 600px;
     width: 450px;
 }
+
+body {
+    background-image: url("images/logo.jpg");
+    background-repeat: no-repeat;
+    background-position: right top;
+}
