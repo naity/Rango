@@ -5,12 +5,32 @@
 {% block title %}{{ category_name }}{% endblock %}
 
 {% block body_block %}
+    <div class="page-header">
+        <h1>Categories</h1>
+    </div>
         {% if category %}
             <h1>{{ category_name }}</h1>
+            
+            <p>
+                <strong id="like_count">{{ category.likes }}</strong> people like this!
+                {% if user.is_authenticated %}
+                    <button id="likes" class="btn btn-primary" type="button" data-catid="{{ category.id }}">
+                        Like
+                    </button>
+                {% endif %}
+            </p>
+
             {% if pages %}
                 <ul>
                     {% for page in pages %}
-                        <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+                        <li>
+                            <a href="{% url 'rango:goto' %}?page_id={{ page.id }}">{{ page.title }}</a>
+                            {% if page.views > 1 %}
+                                ({{ page.views }} views)
+                            {% else %}
+                                ({{ page.views }} view)
+                            {% endif %}
+                        </li>
                     {% endfor %}
                 </ul>
             {% else %}
@@ -29,5 +49,39 @@
             {% endif %}
 
         {% endif %}
+
+    {% if user.is_authenticated %}
+        <div class="page-header">
+            <h1>Search with Rango</h1>
+        </div>
+
+        <div class="row">
+            <div class="panel panel-primary">
+                <form class="form-inline" role="form" id="user_form" action="{% url 'rango:category' category.slug%}" method="post">
+                    {% csrf_token %}
+                    <input type="text" id="query" class="form-control" value="{{ query }}" name="query" autofocus />
+                    <button class="btn btn-primary" type="submit" name="submit">Search</button>
+                </form>
+
+                <div class="panel">
+                    {% if result_list %}
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Results</h3>
+                            <div class="panel-body">
+                                <div class="list-group">
+                                    {% for result in result_list %}
+                                        <div class="list-group-item">
+                                            <h4 class="list-group-item-heading"><a href="{{ result.link }}">{{ result.title }}</a></h4>
+                                            <p class="list-group-item-text">{{ result.summary }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>       
+    {% endif %}
 
 {% endblock %}

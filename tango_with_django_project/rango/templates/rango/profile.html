@@ -1,0 +1,106 @@
+{% extends "rango/base.html" %}
+
+{% load staticfiles %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body_block %}
+    <link href="{% static "rango/style.css" %}" rel="stylesheet">
+    <div class="page-header">
+        <h1>Profile</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6 col-md-3">
+            {% if user_profile.picture %}
+            <img class="profile_img" src="{{ user_profile.picture.url }}" alt="photo"/>
+            {% else %}
+            <img class="profile_img" src="{% static 'rango/images/blank.jpg' %}" alt="photo"/>
+            {% endif %}
+
+        </div>
+        
+        <div class="col-xs-12 col-md-9">
+            {% if own %}
+                <form class="form-horizontal" role="form" id="profile_form" action="{% url 'rango:profile' %}" 
+                    method="post"  enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label for="inputUsername" class="col-sm-2 control-label">Username</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="inputUsername" name="username" placeholder="{{ user_profile.user.username }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+                        <div class="col-sm-6">
+                            <input type="email" class="form-control" id="inputEmail3" name="email" placeholder="{{ user_profile.user.email }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputFirstName" class="col-sm-2 control-label">First name</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="inputFirstName" name="first_name" placeholder="{{ user_profile.user.first_name}}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputLastName" class="col-sm-2 control-label">Last name</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="inputLastName" name="last_name" placeholder="{{ user_profile.user.last_name}}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="website" class="col-sm-2 control-label">Website</label>
+                        <div class="col-sm-6">
+                            <input type="url" class="form-control" id="website" name="website" placeholder="{{ user_profile.website}}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="photo" class="col-sm-2 control-label">Photo</label>
+                        <div class="col-sm-6">
+                            <input type="file" class="form-control" id="photo" name="picture" placeholder="new image">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-default">Update</button>
+                        </div>
+                     </div>
+
+                </form>
+
+            {% else %}
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <h4 class="list-group-item-heading">Username: {{ user_profile.user.username }}</h4>
+                    </div>
+
+                    <div class="list-group-item">
+                        <h4 class="list-group-item-heading">First name: {{ user_profile.user.first_name}}</h4>
+                    </div>
+
+                    <div class="list-group-item">
+                        <h4 class="list-group-item-heading">Last name: {{ user_profile.user.last_name}}</h4>
+                    </div>
+
+                    <div class="list-group-item">
+                        <h4 class="list-group-item-heading">Email: {{ user_profile.user.email }}</h4>
+                    </div>
+
+                     <div class="list-group-item">
+                        <h4 class="list-group-item-heading">Website: {{ user_profile.website }}</h4>
+                    </div>
+                                   
+                </div>
+            {% endif %}
+    </div>
+
+{% endblock %}
+   

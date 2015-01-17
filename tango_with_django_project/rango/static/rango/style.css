@@ -1,10 +1,17 @@
 .muffin {
-    height: 600px;
-    width: 450px;
+    border-radius: 6px;
+    height: 320px;
+    width: 240px;
 }
 
-body {
-    background-image: url("images/logo.jpg");
-    background-repeat: no-repeat;
-    background-position: right top;
+.profile_img {
+    border-radius: 6px;
+    height: 200px;
+    width: 200px;
+}
+
+.form_field {
+    width: 330px;
+    height: auto;
+    border-radius: 5px;
 }

@@ -40,9 +40,21 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["username", "email", "password"]
+        fields = ["username", "password", "email", "first_name", "last_name"]
+
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs) 
+        self.fields['username'].widget.attrs['class'] = "form_field"
+        self.fields['password'].widget.attrs['class'] = "form_field"
+        self.fields['email'].widget.attrs['class'] = "form_field"
+        self.fields["first_name"].widget.attrs['class'] = "form_field"
+        self.fields["last_name"].widget.attrs['class'] = "form_field"
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ["website", "picture"]
+
+    def __init__(self, *args, **kwargs):
+        super(UserProfileForm, self).__init__(*args, **kwargs) 
+        self.fields['website'].widget.attrs['class'] = "form_field"

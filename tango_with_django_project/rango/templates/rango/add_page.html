@@ -4,9 +4,9 @@
 
 {% block body_block %}
     {% if category %}
-        <h1>Add a page in {{ category.name }}</h1>
-        <form id="page_form" action="{% url 'rango:add_page'  category.slug %}" method="post">
+        <form role="form" id="page_form" action="{% url 'rango:add_page'  category.slug %}" method="post">
             {% csrf_token %}
+            <h2 class="form-signin-heading">Add a page to {{ category.name }}</h2>
 
             {% for hidden in form.hidden_fields %}
                 {{ hidden }}
@@ -15,11 +15,12 @@
             {% for field in form.visible_fields %}
                 {{ field.errors }}
                 {{ field.help_text }}
+                <br/>
                 {{ field }}
                 <br/>
                 <br/>
             {% endfor %}
-            <input type="submit" name="submit" value="Create page" />
+            <button class="btn btn-primary" type="submit" name="submit">Create page</button>
         </form>
 
     {% else %}

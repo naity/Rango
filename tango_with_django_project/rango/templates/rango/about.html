@@ -4,8 +4,13 @@
 {% block title %}About{% endblock %}
 
 {% block body_block %}
-    <h1>My name is Muffin and I'm the CEO.</h1>
-    <img class="muffin" src="{% static 'rango/images/muffin.jpg' %}" alt="Muffin's photo" style="height:320px;width:240px"/>
+    <link href="{% static "rango/style.css" %}" rel="stylesheet">
+    <div class="page-header">
+        <h1>About</h1>
+    </div>
+    <div>
+        <h1><small>My name is Muffin and I'm the CEO.</small></h1>
+        <img class="muffin" src="{% static 'rango/images/muffin.jpg' %}" alt="Muffin's photo"/>
+    </div>
 
-    <p> You have visited Rango <strong>{{ visits }}</strong> time(s)</p>
 {% endblock %}
