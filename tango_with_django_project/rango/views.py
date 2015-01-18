@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from rango.bing_search import run_query
 from django.contrib.auth.models import User
+from rango.category_search import get_category_list
 
 # Create your views here.
 def index(request):
@@ -232,6 +233,42 @@ def like_category(request):
                 return HttpResponse(category.likes)
 
     return HttpResponse(0)
+
+def suggest_category(request):
+    context = {}
+    categories = []
+    if request.method == "GET":
+        if "suggestion" in request.GET:
+            starts_with = request.GET["suggestion"]
+
+            categories = get_category_list(8, starts_with)
+
+    context["cats"] = categories
+    return render(request, 'rango/cats.html', context)
+
+@login_required
+def search_add_page(request):
+    context = {}
+    pages = None
+
+    if request.method == "GET":
+        if  "category_id" in request.GET:
+            category_id = request.GET["category_id"]
+            try:
+                category = Category.objects.get(pk=category_id)
+            except Category.DoesNotExist:
+                category = None
+
+        if category:
+            if "page_link" and "page_title" in request.GET:
+                page_link = request.GET["page_link"]
+                page_title = request.GET["page_title"]
+                new_page = Page.objects.get_or_create(category=category, title=page_title, url=page_link, views=0)
+
+            pages = Page.objects.filter(category=category).order_by("-views")
+
+    context["pages"] = pages
+    return render(request, "rango/search_add_page.html", context)
 
 # def register(request):
 #     #if request.session.test_cookie_worked():

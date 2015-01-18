@@ -14,5 +14,7 @@ urlpatterns = [
     url(r"^profile/$", views.profile, name="profile"),
     url(r"^users/$", views.users, name="users"),
     url(r"^like_category/$", views.like_category, name="like_category"),
+    url(r"^suggest_category/$", views.suggest_category, name="suggest_category"),
+    url(r"^search_add_page/$", views.search_add_page, name="search_add_page"),
     url(r"^about/$", views.about, name="about"),
 ]
