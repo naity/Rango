@@ -24,6 +24,12 @@ $(document).ready(function() {
         $.get('/rango/search_add_page/', {category_id:category_id, page_link:page_link, page_title:page_title}, function(data) {
             $("#pages").html(data);
         });
+    });
 
+    $(".page_links").click(function(event){
+        var page_id = $(this).attr("data-page_id");
+        $.get('/rango/goto/', {page_id:page_id}, function(data){
+            $("#"+page_id+"_views").html(data);
+        });
     });
 });

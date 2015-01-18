@@ -113,6 +113,9 @@ def add_page(request, category_name_slug):
     return render(request, "rango/add_page.html", context)
 
 def track_url(request):
+    context = {}
+    page = None
+
     if request.method == "GET":
         if  "page_id" in request.GET:
             page_id = request.GET["page_id"]
@@ -124,9 +127,9 @@ def track_url(request):
             if page:
                 page.views += 1
                 page.save()
-                return HttpResponseRedirect(page.url)
 
-    return HttpResponseRedirect(reverse("rango:index", ))
+    context["page"] = page
+    return render(request, 'rango/page_views_display.html', context)
 
 @login_required
 def register_profile(request):
@@ -263,12 +266,18 @@ def search_add_page(request):
             if "page_link" and "page_title" in request.GET:
                 page_link = request.GET["page_link"]
                 page_title = request.GET["page_title"]
-                new_page = Page.objects.get_or_create(category=category, title=page_title, url=page_link, views=0)
+                new_page = Page.objects.get_or_create(category=category, title=page_title, url=page_link, views=0)[0]
 
             pages = Page.objects.filter(category=category).order_by("-views")
 
     context["pages"] = pages
     return render(request, "rango/search_add_page.html", context)
+
+def about(request):
+    visits = request.session.get("visits")
+    if not visits:
+        visits = 1
+    return render(request, "rango/about.html", {"visits": visits})
 
 # def register(request):
 #     #if request.session.test_cookie_worked():
@@ -332,8 +341,3 @@ def search_add_page(request):
 #     logout(request)
 #     return HttpResponseRedirect(reverse("rango:index"))
 
-def about(request):
-    visits = request.session.get("visits")
-    if not visits:
-        visits = 1
-    return render(request, "rango/about.html", {"visits": visits})
