@@ -114,22 +114,35 @@ def add_page(request, category_name_slug):
 
 def track_url(request):
     context = {}
-    page = None
+    pages = []
+    category = None
 
     if request.method == "GET":
-        if  "page_id" in request.GET:
-            page_id = request.GET["page_id"]
+        if  "category_id" in request.GET:
+            category_id = request.GET["category_id"]
             try:
-                page = Page.objects.get(id=page_id)
-            except Page.DoesNotExist:
-                page = None
+                category = Category.objects.get(pk=category_id)
+            except Category.DoesNotExist:
+                category = None
+
+        if category:
+            if  "page_id" in request.GET:
+                page_id = request.GET["page_id"]
+            
+                try:
+                    page = Page.objects.get(pk=page_id)
+                except Page.DoesNotExist:
+                    page = None
 
             if page:
                 page.views += 1
                 page.save()
 
-    context["page"] = page
-    return render(request, 'rango/page_views_display.html', context)
+            pages = Page.objects.filter(category=category).order_by("-views")
+
+    context["pages"] = pages
+    context["category"] = category
+    return render(request, "rango/search_add_page.html", context)
 
 @login_required
 def register_profile(request):
@@ -252,7 +265,8 @@ def suggest_category(request):
 @login_required
 def search_add_page(request):
     context = {}
-    pages = None
+    pages = []
+    category = None
 
     if request.method == "GET":
         if  "category_id" in request.GET:
@@ -271,6 +285,7 @@ def search_add_page(request):
             pages = Page.objects.filter(category=category).order_by("-views")
 
     context["pages"] = pages
+    context["category"] = category
     return render(request, "rango/search_add_page.html", context)
 
 def about(request):

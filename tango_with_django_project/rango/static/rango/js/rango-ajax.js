@@ -26,10 +26,12 @@ $(document).ready(function() {
         });
     });
 
-    $(".page_links").click(function(event){
+    // If the elements are added dynamically, selecting for the ID or class will not work
+    $(document).on("click", ".page_links", function(){
+        var category_id = $(this).attr("data-catid");
         var page_id = $(this).attr("data-page_id");
-        $.get('/rango/goto/', {page_id:page_id}, function(data){
-            $("#"+page_id+"_views").html(data);
+        $.get('/rango/goto/', {category_id:category_id, page_id:page_id}, function(data){
+            $("#pages").html(data);
         });
     });
 });
