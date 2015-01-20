@@ -119,8 +119,8 @@ LOGIN_URL = "/accounts/login/"
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'yuan.allen.tian@gmail.com'
-EMAIL_HOST_PASSWORD = 'iverson@3'
+EMAIL_HOST_USER = 'example@gmail.com'
+EMAIL_HOST_PASSWORD = 'yourpassword'
  
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
